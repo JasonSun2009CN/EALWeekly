@@ -1,0 +1,6 @@
+{
+  "title": "AI Weekly — Frontiers of AI for Everyone",
+  "description": "Plain, approachable weekly reports about forefront AI tech. Add episodes as Markdown files in src/episodes/*.md",
+  "author": "AI Weekly Team",
+  "baseUrl": "/"
+}

@@ -1,0 +1,13 @@
+---
+layout: layouts/base.njk
+---
+<article class="episode-full">
+  <header>
+    <h1>{{ title }}</h1>
+    <p class="meta">{{ date | date("yyyy-LL-dd") }}{% if tags %} • {{ tags | join(", ") }}{% endif %}</p>
+  </header>
+
+  <section class="episode-body">
+    {{ content | safe }}
+  </section>
+</article>

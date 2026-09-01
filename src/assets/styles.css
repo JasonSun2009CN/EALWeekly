@@ -1,0 +1,37 @@
+:root{
+  --bg: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --accent: #1f6feb;
+}
+
+:root[data-theme="dark"]{
+  --bg: #0b0f17;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --accent: #60a5fa;
+}
+
+*{box-sizing:border-box}
+body{font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:var(--bg); color:var(--text); line-height:1.6}
+.container{max-width:900px;margin:0 auto;padding:1rem}
+.site-header{background:rgba(0,0,0,0.02);border-bottom:1px solid rgba(0,0,0,0.04)}
+.site-header .container{display:flex;align-items:center;gap:1rem;padding:0.75rem 1rem}
+.brand{font-weight:700;text-decoration:none;color:inherit}
+.main-nav a{margin-right:1rem;text-decoration:none;color:var(--muted)}
+.controls{margin-left:auto}
+.lede{color:var(--muted)}
+.hero{padding:1rem 0}
+.episodes-list{display:grid;grid-template-columns:1fr;gap:1rem}
+.episode-card{padding:1rem;border:1px solid rgba(0,0,0,0.06);border-radius:6px;background:rgba(255,255,255,0.01)}
+.episode-card h3{margin:0 0 0.25rem}
+.episode-card .meta{color:var(--muted);font-size:0.9rem}
+.episode-full{padding:1rem}
+.search-area{margin:1rem 0}
+.search-row{display:flex;gap:0.5rem;flex-wrap:wrap}
+#search-input{flex:1;padding:0.5rem;border-radius:6px;border:1px solid rgba(0,0,0,0.08)}
+.search-results{margin-top:0.5rem}
+.site-footer{padding:1rem 0;border-top:1px solid rgba(0,0,0,0.04)}
+
+/* small screens */
+@media (prefers-color-scheme: dark){:root.theme-auto{background:var(--bg)}}

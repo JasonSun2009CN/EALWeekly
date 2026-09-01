@@ -1,0 +1,16 @@
+---
+permalink: /search.json
+sitemap: false
+---
+[
+{%- for ep in collections.episodes -%}
+  {
+    "title": "{{ ep.data.title | safe }}",
+    "url": "{{ ep.url }}",
+    "date": "{{ ep.date | date("yyyy-LL-dd") }}",
+    "tags": {{ ep.data.tags | jsonify }},
+    "summary": "{{ (ep.data.summary or ep.templateContent | striptags | truncate(300)) | safe }}",
+    "content": "{{ ep.templateContent | striptags | replace('\n', ' ') | safe }}"
+  }{%- if not loop.last -%},{%- endif -%}
+{%- endfor -%}
+]

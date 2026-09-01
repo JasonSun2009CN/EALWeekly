@@ -1,0 +1,13 @@
+---
+layout: layouts/base.njk
+title: Episodes
+permalink: /episodes/index.html
+---
+<section class="all-episodes">
+  <h2>All episodes</h2>
+  <div class="episodes-list">
+    {% for ep in collections.episodes %}
+      {% include "episode-card.njk" with { item: ep } %}
+    {% endfor %}
+  </div>
+</section>

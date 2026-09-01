@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{{ title | default(site.title) }}</title>
+    <meta name="description" content="{{ description | default(site.description) }}" />
+    <link rel="stylesheet" href="/assets/styles.css">
+    <!-- Fuse.js (client-side search) -->
+    <script src="https://unpkg.com/fuse.js@6.6.2/dist/fuse.min.js"></script>
+  </head>
+  <body class="theme-auto">
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href="/">{{ site.title }}</a>
+        <nav class="main-nav">
+          <a href="/">Home</a>
+          <a href="/episodes/">Episodes</a>
+        </nav>
+        <div class="controls">
+          <button id="theme-toggle" aria-label="Toggle theme">🌓</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      {% if page.url == "/" %}
+        <section class="hero">
+          <h1>{{ site.title }}</h1>
+          <p class="lede">{{ site.description }}</p>
+        </section>
+      {% endif %}
+
+      <section class="search-area">
+        <div class="search-row">
+          <input id="search-input" type="search" placeholder="Search by title, content, tags..." aria-label="Search episodes" />
+          <input id="filter-week" type="week" title="Filter by week" />
+          <input id="filter-date" type="date" title="Filter by date" />
+        </div>
+        <div id="search-results" class="search-results"></div>
+      </section>
+
+      {{ content | safe }}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <small>© {{ (site.author) }} — AI Weekly. Built with Eleventy.</small>
+      </div>
+    </footer>
+
+    <script src="/assets/script.js" defer></script>
+  </body>
+</html>

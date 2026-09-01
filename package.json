@@ -1,0 +1,13 @@
+{
+  "name": "ai-weekly-report-website",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI Weekly Report - static site scaffolded with Eleventy",
+  "scripts": {
+    "dev": "npx @11ty/eleventy --serve",
+    "build": "npx @11ty/eleventy"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.0"
+  }
+}
