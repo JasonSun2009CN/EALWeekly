@@ -2,7 +2,6 @@ module.exports = function(eleventyConfig) {
   const baseUrl = process.env.BASE_URL || "/";
 
   eleventyConfig.addPassthroughCopy({"src/assets": "assets"});
-  eleventyConfig.addPassthroughCopy({"index.html": "index.html"});
   eleventyConfig.addGlobalData("baseUrl", baseUrl);
 
   const getIsoWeek = (value) => {
@@ -23,8 +22,12 @@ module.exports = function(eleventyConfig) {
     };
   };
 
+  const normalizeFileName = (inputPath) => {
+    return ((inputPath || "").split(/[\\/]/).pop() || "").replace(/\.(md|markdown)$/i, "");
+  };
+
   const getLanguageFromPath = (inputPath, frontmatter = {}) => {
-    const fileName = (inputPath || "").split(/[\\/]/).pop() || "";
+    const fileName = normalizeFileName(inputPath);
     const explicit = (frontmatter.language || frontmatter.lang || "").toLowerCase();
     if (explicit) return explicit;
     if (/[-_](zh|cn|zh-cn)$/i.test(fileName)) return "zh";
@@ -33,8 +36,7 @@ module.exports = function(eleventyConfig) {
   };
 
   const getBaseKey = (inputPath, frontmatter = {}) => {
-    const fileName = (inputPath || "").split(/[\\/]/).pop() || "";
-    const cleanName = fileName.replace(/\.(md|markdown)$/i, "");
+    const cleanName = normalizeFileName(inputPath);
     const explicitBase = frontmatter.baseKey || frontmatter.slug || "";
     if (explicitBase) return String(explicitBase).trim();
     const match = cleanName.match(/^(.*?)(?:[-_](zh|cn|en|eng|english))$/i);

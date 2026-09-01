@@ -24,12 +24,23 @@
 
   // Search: fetch search.json and wire Fuse
   const searchInput = document.getElementById('search-input');
+  const searchTarget = document.getElementById('search-target');
   const resultsEl = document.getElementById('search-results');
   const filterWeek = document.getElementById('filter-week');
   const filterDate = document.getElementById('filter-date');
 
+  if(!searchInput || !resultsEl) return;
+
   let items = [];
   let fuse;
+
+  function getFuseKeys(){
+    if(!searchTarget) return ['title', 'content'];
+    const mode = searchTarget.value;
+    if(mode === 'title') return ['title'];
+    if(mode === 'content') return ['content'];
+    return ['title', 'content'];
+  }
 
   function renderResults(list){
     if(!list || list.length === 0){ resultsEl.innerHTML = '<p class="muted">No results</p>'; return; }
@@ -48,7 +59,11 @@
       dateObj: d.date ? new Date(d.date + 'T00:00:00') : null
     }));
 
-    fuse = new Fuse(items, { keys: ['title','content','tags','summary'], threshold: 0.35 });
+    fuse = new Fuse(items, {
+      keys: ['title', 'content', 'summary', 'tags'],
+      threshold: 0.38,
+      ignoreLocation: true
+    });
     renderResults(items.slice(0, 10));
   }).catch(err=>{
     resultsEl.innerHTML = '<p class="muted">Search index not available.</p>';
@@ -76,12 +91,11 @@
 
   function applyFiltersAndSearch(){
     const q = searchInput.value.trim();
-    const week = filterWeek.value;
-    const date = filterDate.value;
+    const week = filterWeek ? filterWeek.value : '';
+    const date = filterDate ? filterDate.value : '';
 
     let candidates = items.slice();
 
-    // apply date/week filters
     if(week){
       const range = getWeekRangeFromWeekInput(week);
       if(range){
@@ -94,8 +108,8 @@
     }
 
     if(q && fuse){
-      const res = fuse.search(q, {limit: 50}).map(r=>r.item);
-      // if we applied filters, intersect by url
+      const keys = getFuseKeys();
+      const res = fuse.search(q, { keys, limit: 50 }).map(r=>r.item);
       if(week || date){
         const urls = new Set(candidates.map(c=>c.url));
         renderResults(res.filter(r=>urls.has(r.url)));
@@ -103,7 +117,6 @@
         renderResults(res);
       }
     } else {
-      // no query -> show filtered list (latest first)
       renderResults(candidates.slice(0, 50));
     }
   }
@@ -111,7 +124,8 @@
   const debounce = (fn, t=200)=>{let id; return (...a)=>{clearTimeout(id); id=setTimeout(()=>fn(...a), t);} };
 
   searchInput.addEventListener('input', debounce(applyFiltersAndSearch, 180));
-  filterWeek.addEventListener('change', applyFiltersAndSearch);
-  filterDate.addEventListener('change', applyFiltersAndSearch);
+  if(searchTarget) searchTarget.addEventListener('change', applyFiltersAndSearch);
+  if(filterWeek) filterWeek.addEventListener('change', applyFiltersAndSearch);
+  if(filterDate) filterDate.addEventListener('change', applyFiltersAndSearch);
 
 })();

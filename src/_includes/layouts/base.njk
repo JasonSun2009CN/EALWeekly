@@ -32,14 +32,29 @@
         </section>
       {% endif %}
 
-      <section class="search-area">
-        <div class="search-row">
-          <input id="search-input" type="search" placeholder="Search by title, content, tags..." aria-label="Search episodes" />
-          <input id="filter-week" type="week" title="Filter by week" />
-          <input id="filter-date" type="date" title="Filter by date" />
-        </div>
-        <div id="search-results" class="search-results"></div>
-      </section>
+      {% if page.url == "/" or page.url == "/episodes/" %}
+        <section class="search-area">
+          <div class="search-row">
+            <div class="search-control search-input-wrap">
+              <input id="search-input" type="search" placeholder="Search by title or content..." aria-label="Search episodes" />
+            </div>
+            <div class="search-control search-select-wrap">
+              <select id="search-target" aria-label="Search field">
+                <option value="title,content">Title + Content</option>
+                <option value="title">Title</option>
+                <option value="content">Content</option>
+              </select>
+            </div>
+            <div class="search-control">
+              <input id="filter-week" type="week" title="Filter by week" />
+            </div>
+            <div class="search-control">
+              <input id="filter-date" type="date" title="Filter by date" />
+            </div>
+          </div>
+          <div id="search-results" class="search-results"></div>
+        </section>
+      {% endif %}
 
       {{ content | safe }}
     </main>
