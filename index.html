@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EAL Weekly</title>
+    <meta
+      name="description"
+      content="EAL Weekly 是一个面向大众的 AI 前沿信息静态入口页面。"
+    />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif' font-size='30' font-weight='800' fill='white' letter-spacing='1'%3EEAL%3C/text%3E%3C/svg%3E" />
+    <style>
+      :root {
+        --bg: #f7f9fc;
+        --panel: #ffffff;
+        --panel-alt: #eef4ff;
+        --text: #111827;
+        --muted: #5b6472;
+        --border: #dfe7f3;
+        --accent: #2563eb;
+        --accent-strong: #1d4ed8;
+        --shadow: 0 18px 45px rgba(37, 99, 235, 0.08);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+        color: var(--text);
+        line-height: 1.7;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      .container {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        background: rgba(255, 255, 255, 0.78);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(31, 41, 55, 0.07);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 72px;
+      }
+
+      .brand {
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: var(--text);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .nav-links a:last-child {
+        background: var(--accent);
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 999px;
+        box-shadow: var(--shadow);
+      }
+
+      .hero {
+        padding: 72px 0 36px;
+      }
+
+      .hero-inner {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 28px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: var(--panel-alt);
+        color: var(--accent-strong);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 18px 0 14px;
+        font-size: clamp(2.6rem, 4vw, 4.3rem);
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.08rem;
+        max-width: 620px;
+      }
+
+      .cta-row {
+        margin-top: 30px;
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        padding: 14px 20px;
+        font-weight: 600;
+        transition: transform 0.15s ease;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+      }
+
+      .button.primary {
+        background: var(--accent);
+        color: #fff;
+        box-shadow: var(--shadow);
+      }
+
+      .button.secondary {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+
+      .hero-card {
+        background: var(--panel);
+        border: 1px solid rgba(37, 99, 235, 0.08);
+        border-radius: 22px;
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .hero-card .mini-label {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+      }
+
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 22px;
+      }
+
+      .stat {
+        background: var(--panel-alt);
+        border: 1px solid rgba(37, 99, 235, 0.06);
+        border-radius: 16px;
+        padding: 18px 16px;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.8rem;
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+
+      .section {
+        padding: 18px 0 64px;
+      }
+
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-size: clamp(1.5rem, 2vw, 2.1rem);
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 22px 20px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+      }
+
+      .tag {
+        display: inline-block;
+        background: #edf3ff;
+        color: var(--accent-strong);
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 1.18rem;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      footer {
+        border-top: 1px solid rgba(31, 41, 55, 0.08);
+        padding: 30px 0 50px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      @media (max-width: 800px) {
+        .hero-inner,
+        .cards {
+          grid-template-columns: 1fr;
+        }
+
+        .nav {
+          flex-wrap: wrap;
+          padding: 14px 0;
+          gap: 12px;
+        }
+
+        .nav-links {
+          width: 100%;
+          justify-content: space-between;
+          gap: 10px;
+          font-size: 0.85rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <div class="brand">EAL Weekly</div>
+        <nav class="nav-links" aria-label="主导航">
+          <a href="#about">关于</a>
+          <a href="#highlights">亮点</a>
+          <a href="#episodes">内容</a>
+          <a href="#contact">订阅</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-inner">
+          <div>
+            <span class="eyebrow">Frontiers of AI</span>
+            <h1>让 AI 资讯更轻松、更清晰。</h1>
+            <p>
+              AI Weekly 用简洁、平实的方式跟踪 AI 的前沿发展，帮助你快速理解
+              新模型、工具、研究和应用趋势，而不被技术术语淹没。
+            </p>
+            <div class="cta-row">
+              <a class="button primary" href="#episodes">查看最新内容</a>
+              <a class="button secondary" href="#about">了解更多</a>
+            </div>
+          </div>
+
+          <aside class="hero-card" aria-label="站点概览">
+            <div class="mini-label">Live monitor</div>
+            <div class="stat-grid">
+              <div class="stat">
+                <strong>实时</strong>
+                <span>监测文章更新</span>
+              </div>
+              <div class="stat">
+                <strong>持续</strong>
+                <span>跟踪热点变化</span>
+              </div>
+              <div class="stat">
+                <strong>聚焦</strong>
+                <span>不同 AI 议题</span>
+              </div>
+              <div class="stat">
+                <strong>开放</strong>
+                <span>更新中持续扩展</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>为什么值得关注</h2>
+          </div>
+          <div class="cards">
+            <article class="card">
+              <span class="tag">简明</span>
+              <h3>用通俗语言讲技术</h3>
+              <p>从模型能力到应用落地，内容强调对普通读者友好的解释。</p>
+            </article>
+            <article class="card">
+              <span class="tag">聚焦</span>
+              <h3>追踪真实变化</h3>
+              <p>关注发布、趋势和行业影响，而不是单纯堆砌新闻标题。</p>
+            </article>
+            <article class="card">
+              <span class="tag">实用</span>
+              <h3>帮助你理解和应用</h3>
+              <p>把抽象技术转化为对业务、创作和产品决策有帮助的信息。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="episodes" class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>最新内容</h2>
+            <a href="#contact">订阅更新</a>
+          </div>
+          <div class="cards">
+            <article class="card">
+              <span class="tag">Models</span>
+              <h3>多模态模型如何改变工作流</h3>
+              <p>视觉、语音和文本结合带来更自然的交互方式。</p>
+            </article>
+            <article class="card">
+              <span class="tag">Tools</span>
+              <h3>AI 编程助手正在改变开发效率</h3>
+              <p>从代码生成到测试辅助，开发过程被持续重构。</p>
+            </article>
+            <article class="card">
+              <span class="tag">Business</span>
+              <h3>企业如何把 AI 从试验走向落地</h3>
+              <p>关注落地场景、成本控制与治理能力的关键评估。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact">
+      <div class="container">
+        EAL Weekly · 面向普通人的 AI 前沿观察
+      </div>
+    </footer>
+  </body>
+</html>
