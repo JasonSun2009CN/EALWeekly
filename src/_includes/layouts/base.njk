@@ -6,17 +6,17 @@
     <title>{{ title | default(site.title) }}</title>
     <meta name="description" content="{{ description | default(site.description) }}" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif' font-size='30' font-weight='800' fill='white' letter-spacing='1'%3EEAL%3C/text%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="/assets/styles.css">
+    <link rel="stylesheet" href="{{ baseUrl }}assets/styles.css">
     <!-- Fuse.js (client-side search) -->
     <script src="https://unpkg.com/fuse.js@6.6.2/dist/fuse.min.js"></script>
   </head>
   <body class="theme-auto">
     <header class="site-header">
       <div class="container">
-        <a class="brand" href="/">{{ site.title }}</a>
+        <a class="brand" href="{{ baseUrl }}">{{ site.title }}</a>
         <nav class="main-nav">
-          <a href="/">Home</a>
-          <a href="/episodes/">Episodes</a>
+          <a href="{{ baseUrl }}">Home</a>
+          <a href="{{ baseUrl }}episodes/">Episodes</a>
         </nav>
         <div class="controls">
           <button id="theme-toggle" aria-label="Toggle theme">🌓</button>
@@ -50,6 +50,6 @@
       </div>
     </footer>
 
-    <script src="/assets/script.js" defer></script>
+    <script src="{{ baseUrl }}assets/script.js" defer></script>
   </body>
 </html>

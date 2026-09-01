@@ -115,8 +115,116 @@ npm run dev
 npm run build
 ```
 
-## 7. 说明
+## 7. 本地预览与自动刷新
+
+### 本地预览
+
+在项目根目录执行：
+
+```bash
+npm run dev
+```
+
+然后打开浏览器访问：
+
+```text
+http://localhost:8080
+```
+
+Eleventy 会自动监控以下文件的变化：
+
+- Markdown 文章
+- Nunjucks 模板
+- CSS 和 JS
+- 其他静态资源
+
+一旦文件更新，页面会自动重新生成并刷新。
+
+### 生产构建
+
+```bash
+npm run build
+```
+
+生成目录为：
+
+```text
+_site/
+```
+
+## 8. GitHub Pages 部署步骤
+
+这个项目支持 GitHub Pages 自动部署。已在仓库中添加工作流文件：
+
+- [.github/workflows/pages.yml](.github/workflows/pages.yml)
+
+部署流程：
+
+1. 代码推送到 `main` 分支
+2. GitHub Actions 自动触发 workflow
+3. 安装依赖并执行 `npm run build`
+4. 将 `_site` 目录部署到 GitHub Pages
+5. 页面自动更新
+
+### GitHub 仓库设置
+
+在 GitHub 仓库中：
+
+1. 进入 Settings
+2. 选择 Pages
+3. Source 选择 `GitHub Actions`
+
+然后每次合并到 `main` 后，GitHub Pages 都会自动重新构建并发布。
+
+## 9. User Site 与 Project Site 的区别
+
+### User Site（用户站点）
+
+这是 GitHub 提供的个人主页形式，网址通常是：
+
+```text
+https://<username>.github.io/
+```
+
+特点：
+
+- 这是一个个人站点入口
+- 适合放个人主页、博客、作品集
+- 通常专门用于一个用户或个人品牌
+
+### Project Site（项目站点）
+
+这是仓库对应的项目页面，网址通常是：
+
+```text
+https://<username>.github.io/<repository-name>/
+```
+
+特点：
+
+- 适合放项目文档、案例、周报、博客站点
+- 路径中带仓库名
+- 例如本仓库当前配置会使用：
+
+```text
+https://<username>.github.io/EALWeekly/
+```
+
+### 你这个仓库属于哪种？
+
+这个项目更适合使用 Project Site，因为它是一个仓库级项目网站，而且路径需要带仓库名。当前工作流中已配置：
+
+```yaml
+BASE_URL: /EALWeekly/
+```
+
+这意味着站点资源和链接会按 `/EALWeekly/` 这个前缀生成，确保在 GitHub Pages 项目站点下正确访问。
+
+如果你想改成 User Site，则需要把前缀改成 `/`，并使用根域名站点。
+
+## 10. 说明
 
 - 文章以 Markdown 为主源，不再依赖测试数据。
 - 当前站点支持中英双语文章切换。
 - 首页已保留“精选文章列表”区域，用于突出重要文章。
+- 通过 GitHub Pages + GitHub Actions，可以实现：更新 MD 文档 → push → 自动部署 → 站点刷新。

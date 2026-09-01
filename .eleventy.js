@@ -1,6 +1,9 @@
 module.exports = function(eleventyConfig) {
+  const baseUrl = process.env.BASE_URL || "/";
+
   eleventyConfig.addPassthroughCopy({"src/assets": "assets"});
   eleventyConfig.addPassthroughCopy({"index.html": "index.html"});
+  eleventyConfig.addGlobalData("baseUrl", baseUrl);
 
   const getIsoWeek = (value) => {
     if (!value) return { week: 0, label: "Week 0", iso: "0000-W00" };
@@ -165,6 +168,7 @@ module.exports = function(eleventyConfig) {
       data: "_data",
       output: "_site"
     },
+    pathPrefix: baseUrl,
     templateFormats: ["md", "njk", "11ty.js"],
     htmlTemplateEngine: "njk",
     markdownTemplateEngine: "njk"
