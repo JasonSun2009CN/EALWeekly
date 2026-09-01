@@ -7,7 +7,8 @@ permalink: /episodes/index.html
   <h2>All episodes</h2>
   <div class="episodes-list">
     {% for ep in collections.episodes %}
-      {% include "episode-card.njk" with { item: ep } %}
+      {% set item = ep %}
+      {% include "episode-card.njk" %}
     {% endfor %}
   </div>
 </section>
