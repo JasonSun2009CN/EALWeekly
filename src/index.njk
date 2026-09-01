@@ -63,7 +63,7 @@ permalink: /index.html
             <div class="language-column">
               <div class="language-tag chinese">中文</div>
               {% for ep in group.zh %}
-                <a class="story-card" href="{{ ep.url }}">
+                <a class="story-card" href="{{ ep.url | withBase }}">
                   <span class="story-date">{{ ep.data.date | date("yyyy-LL-dd") }}</span>
                   <strong>{{ ep.data.title }}</strong>
                   <p>{{ ep.data.summary }}</p>
@@ -74,7 +74,7 @@ permalink: /index.html
             <div class="language-column">
               <div class="language-tag english">English</div>
               {% for ep in group.en %}
-                <a class="story-card" href="{{ ep.url }}">
+                <a class="story-card" href="{{ ep.url | withBase }}">
                   <span class="story-date">{{ ep.data.date | date("yyyy-LL-dd") }}</span>
                   <strong>{{ ep.data.title }}</strong>
                   <p>{{ ep.data.summary }}</p>

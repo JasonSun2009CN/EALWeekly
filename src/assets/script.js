@@ -53,7 +53,8 @@
     `).join('');
   }
 
-  const searchIndexUrl = new URL('search.json', document.baseURI).toString();
+  const basePath = document.querySelector('meta[name="base-url"]')?.getAttribute('content') || '/';
+  const searchIndexUrl = new URL('search.json', `${window.location.origin}${basePath}`).toString();
 
   fetch(searchIndexUrl).then(r=>r.json()).then(data=>{
     items = data.map(d=>({

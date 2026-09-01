@@ -1,5 +1,5 @@
 <article class="episode-card">
-  <h3><a href="{{ item.url }}">{{ item.data.title }}</a></h3>
+  <h3><a href="{{ item.url | withBase }}">{{ item.data.title }}</a></h3>
   <p class="meta">{{ item.date | date("yyyy-LL-dd") }} • {% if item.data.tags %}{{ item.data.tags | join(", ") }}{% endif %}</p>
   <p class="summary">{{ item.data.summary | default(item.templateContent | striptags | truncate(200)) }}</p>
 </article>

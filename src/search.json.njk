@@ -6,7 +6,7 @@ sitemap: false
 {%- for ep in collections.episodes -%}
   {
     "title": "{{ ep.data.title | safe }}",
-    "url": "{{ ep.url }}",
+    "url": "{{ ep.url | withBase }}",
     "date": "{{ ep.date | date("yyyy-LL-dd") }}",
     "tags": {{ ep.data.tags | jsonify }},
     "summary": "{{ (ep.data.summary or ep.templateContent | striptags | truncate(300)) | safe }}",
