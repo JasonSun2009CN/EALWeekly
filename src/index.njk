@@ -12,19 +12,35 @@ permalink: /index.html
 
   <div class="divider"></div>
 
+  {% set currentGroup = collections.weekGroups[0] if collections.weekGroups and collections.weekGroups.length else null %}
   <div class="issue-panel">
     <div class="issue-header">
       <span>THIS WEEK</span>
-      <time>2026.08.24 — 2026.08.30</time>
+      {% if currentGroup %}
+        <time>{{ currentGroup.start | date("yyyy-LL-dd") }} — {{ currentGroup.end | date("yyyy-LL-dd") }}</time>
+      {% else %}
+        <time>2026-08-24 — 2026-08-24</time>
+      {% endif %}
     </div>
 
-    <p class="editorial-summary compact">
-      A bilingual journal covering the week’s most important AI developments, explained in plain language.
-    </p>
-
-    <div class="cta-row">
-      <a href="/episodes/" class="primary-link">Read this week's issue</a>
-    </div>
+    {% if currentGroup %}
+      <div class="this-week-list">
+        {% for ep in currentGroup.zh %}
+          <a class="this-week-item" href="{{ ep.url | withBase }}">
+            <span class="issue-kicker">中文</span>
+            <strong>{{ ep.data.title }}</strong>
+            <p>{{ ep.data.summary }}</p>
+          </a>
+        {% endfor %}
+        {% for ep in currentGroup.en %}
+          <a class="this-week-item" href="{{ ep.url | withBase }}">
+            <span class="issue-kicker">English</span>
+            <strong>{{ ep.data.title }}</strong>
+            <p>{{ ep.data.summary }}</p>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
   </div>
 
   <div class="divider"></div>
@@ -32,7 +48,7 @@ permalink: /index.html
   <section class="featured-section">
     <div class="featured-topbar">
       <h2>精选文章</h2>
-      <a href="/episodes/">查看全部</a>
+      <a href="{{ baseUrl }}episodes/">查看全部</a>
     </div>
 
     <div class="week-groups">

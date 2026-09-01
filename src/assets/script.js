@@ -53,7 +53,9 @@
     `).join('');
   }
 
-  fetch('/search.json').then(r=>r.json()).then(data=>{
+  const searchIndexUrl = new URL('search.json', document.baseURI).toString();
+
+  fetch(searchIndexUrl).then(r=>r.json()).then(data=>{
     items = data.map(d=>({
       ...d,
       dateObj: d.date ? new Date(d.date + 'T00:00:00') : null

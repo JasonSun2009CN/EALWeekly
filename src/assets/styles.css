@@ -11,20 +11,23 @@
   --shadow: 0 18px 45px rgba(37, 99, 235, 0.08);
   --editorial: #f8f1e7;
   --editorial-border: #e7dcc5;
+  --header-bg: rgba(255, 255, 255, 0.74);
 }
 
 :root[data-theme="dark"] {
-  --bg: #0b1020;
-  --panel: #111827;
-  --panel-soft: #152233;
-  --text: #e5e7eb;
-  --muted: #a5b4c9;
-  --soft: #93a4bf;
-  --border: rgba(148, 163, 184, 0.22);
-  --accent: #60a5fa;
-  --accent-strong: #93c5fd;
-  --editorial: rgba(120, 91, 52, 0.18);
-  --editorial-border: rgba(206, 165, 101, 0.25);
+  --bg: #0b1220;
+  --panel: #101827;
+  --panel-soft: #111d2f;
+  --text: #edf2ff;
+  --muted: #b7c3d8;
+  --soft: #8da2c5;
+  --border: rgba(148, 163, 184, 0.17);
+  --accent: #8ab4ff;
+  --accent-strong: #dfeeff;
+  --shadow: 0 18px 45px rgba(2, 6, 23, 0.6);
+  --editorial: rgba(17, 24, 39, 0.95);
+  --editorial-border: rgba(148, 163, 184, 0.18);
+  --header-bg: rgba(11, 18, 32, 0.9);
 }
 
 * { box-sizing: border-box; }
@@ -32,9 +35,13 @@
 body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   margin: 0;
-  background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+  background: linear-gradient(180deg, var(--bg) 0%, #eaf2ff 100%);
   color: var(--text);
   line-height: 1.7;
+}
+
+:root[data-theme="dark"] body {
+  background: linear-gradient(180deg, #0b1220 0%, #0d1727 100%);
 }
 
 .container {
@@ -44,7 +51,7 @@ body {
 }
 
 .site-header {
-  background: rgba(255, 255, 255, 0.74);
+  background: var(--header-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
@@ -140,6 +147,52 @@ main.container {
 .learn-section,
 .all-episodes {
   margin-top: 24px;
+}
+
+.this-week-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.this-week-item {
+  display: block;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.this-week-item:hover {
+  border-color: rgba(37, 99, 235, 0.28);
+  transform: translateY(-1px);
+}
+
+.issue-kicker {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--accent-strong);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.this-week-item strong {
+  display: block;
+  font-size: 1.12rem;
+  margin-bottom: 4px;
+}
+
+.this-week-item p {
+  margin: 0;
+  color: var(--muted);
 }
 
 .issue-header {
@@ -430,8 +483,20 @@ main.container {
   border-top: 1px solid var(--border);
   margin-top: 26px;
   padding: 24px 0 30px;
-  text-align: center;
   color: var(--muted);
+}
+
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: center;
+}
+
+.site-footer a {
+  color: var(--accent-strong);
+  text-decoration: none;
 }
 
 @media (max-width: 760px) {

@@ -5,20 +5,18 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addGlobalData("baseUrl", baseUrl);
 
   const getIsoWeek = (value) => {
-    if (!value) return { week: 0, label: "Week 0", iso: "0000-W00" };
+    if (!value) return { week: 1, label: "Week 1", iso: "2026-W01" };
     const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return { week: 0, label: "Week 0", iso: "0000-W00" };
+    if (Number.isNaN(date.getTime())) return { week: 1, label: "Week 1", iso: "2026-W01" };
 
-    const temp = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-    const day = temp.getUTCDay() || 7;
-    temp.setUTCDate(temp.getUTCDate() + 4 - day);
-    const yearStart = new Date(Date.UTC(temp.getUTCFullYear(), 0, 1));
-    const week = Math.ceil((((temp - yearStart) / 86400000) + 1) / 7);
+    const start = new Date("2026-08-24T00:00:00Z");
+    const diffDays = Math.floor((Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(start.getFullYear(), start.getMonth(), start.getDate())) / 86400000);
+    const week = Math.max(1, Math.floor(diffDays / 7) + 1);
 
     return {
       week,
       label: `Week ${week}`,
-      iso: `${temp.getUTCFullYear()}-W${String(week).padStart(2, "0")}`
+      iso: `2026-W${String(week).padStart(2, "0")}`
     };
   };
 
@@ -57,6 +55,16 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addFilter("jsonify", function(value) {
     return JSON.stringify(value || []);
+  });
+
+  eleventyConfig.addFilter("withBase", function(value) {
+    if (!value || typeof value !== "string") return value;
+    if (/^https?:\/\//i.test(value) || value.startsWith("#") || value.startsWith("mailto:")) {
+      return value;
+    }
+    const normalizedBase = (baseUrl || "/").replace(/\/$/, "");
+    const normalizedValue = value.startsWith("/") ? value.slice(1) : value;
+    return normalizedBase === "/" ? `/${normalizedValue}` : `${normalizedBase}/${normalizedValue}`;
   });
 
   eleventyConfig.addFilter("translationFor", function(items, page) {
