@@ -4,11 +4,43 @@ title: Episodes
 permalink: /episodes/index.html
 ---
 <section class="all-episodes">
-  <h2>All episodes</h2>
-  <div class="episodes-list">
-    {% for ep in collections.episodes %}
-      {% set item = ep %}
-      {% include "episode-card.njk" %}
+  <div class="archive-header">
+    <div class="eyebrow">ARCHIVE</div>
+    <h2>All issues</h2>
+  </div>
+
+  <div class="week-groups archive-groups">
+    {% for group in collections.weekGroups %}
+      <article class="week-group archive-group">
+        <div class="week-header">
+          <div class="week-label">{{ group.weekLabel }}</div>
+          <time>{{ group.start | date("yyyy-LL-dd") }} — {{ group.end | date("yyyy-LL-dd") }}</time>
+        </div>
+
+        <div class="language-grid">
+          <div class="language-column">
+            <div class="language-tag chinese">中文</div>
+            {% for ep in group.zh %}
+              <a class="story-card" href="{{ ep.url }}">
+                <span class="story-date">{{ ep.data.date | date("yyyy-LL-dd") }}</span>
+                <strong>{{ ep.data.title }}</strong>
+                <p>{{ ep.data.summary }}</p>
+              </a>
+            {% endfor %}
+          </div>
+
+          <div class="language-column">
+            <div class="language-tag english">English</div>
+            {% for ep in group.en %}
+              <a class="story-card" href="{{ ep.url }}">
+                <span class="story-date">{{ ep.data.date | date("yyyy-LL-dd") }}</span>
+                <strong>{{ ep.data.title }}</strong>
+                <p>{{ ep.data.summary }}</p>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      </article>
     {% endfor %}
   </div>
 </section>

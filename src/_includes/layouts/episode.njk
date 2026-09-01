@@ -1,11 +1,26 @@
 ---
 layout: layouts/base.njk
 ---
+{% set translation = collections.episodes | translationFor(page) %}
 <article class="episode-full">
   <header>
+    <div class="article-meta-row">
+      <span class="week-badge">{{ weekLabel }}</span>
+      <time>{{ date | date("yyyy-LL-dd") }}</time>
+      {% if tags %}<span class="tag">{{ tags | join(", ") }}</span>{% endif %}
+    </div>
     <h1>{{ title }}</h1>
-    <p class="meta">{{ date | date("yyyy-LL-dd") }}{% if tags %} • {{ tags | join(", ") }}{% endif %}</p>
   </header>
+
+  {% if translation %}
+    <div class="translation-switcher">
+      {% if language == "zh" %}
+        <a href="{{ translation.url }}" class="lang-button">English Version</a>
+      {% else %}
+        <a href="{{ translation.url }}" class="lang-button">中文版本</a>
+      {% endif %}
+    </div>
+  {% endif %}
 
   <section class="episode-body">
     {{ content | safe }}

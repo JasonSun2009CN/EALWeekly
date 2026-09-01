@@ -3,13 +3,117 @@ layout: layouts/base.njk
 title: Home
 permalink: /home/index.html
 ---
-<section class="latest">
-  <h2>Latest episodes</h2>
-  <div class="episodes-list">
-    {% for ep in collections.episodes | slice(0, 6) %}
-      {% set item = ep %}
-      {% include "episode-card.njk" %}
-    {% endfor %}
+<section class="frontpage">
+  <div class="masthead-block">
+    <div class="eyebrow">EAL WEEKLY</div>
+    <h1>AI, explained for everyone.</h1>
+    <p class="editorial-summary">A bilingual weekly journal covering AI news, tools, and ideas in plain language.</p>
   </div>
-  <p><a href="/episodes/">Browse all episodes →</a></p>
+
+  <div class="divider"></div>
+
+  <div class="issue-panel">
+    <div class="issue-header">
+      <span>THIS WEEK</span>
+      <time>2026.08.24 — 2026.08.30</time>
+    </div>
+
+    <ul class="headline-list">
+      <li>
+        <span class="dot"></span>
+        <div>
+          <h3>AI Agents are becoming physical</h3>
+          <p>Anthropic 发布 Model Hardware Standard</p>
+        </div>
+      </li>
+      <li>
+        <span class="dot"></span>
+        <div>
+          <h3>AI Agents broke out of their sandbox</h3>
+          <p>OpenAI / Hugging Face 安全事件调查</p>
+        </div>
+      </li>
+      <li>
+        <span class="dot"></span>
+        <div>
+          <h3>China’s open-source AI push</h3>
+          <p>腾讯发布新的开源模型</p>
+        </div>
+      </li>
+    </ul>
+
+    <div class="cta-row">
+      <a href="/episodes/" class="primary-link">Read this week's issue</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <section class="featured-section">
+    <div class="featured-topbar">
+      <h2>精选文章</h2>
+      <a href="/episodes/">查看全部</a>
+    </div>
+
+    <div class="week-groups">
+      {% for group in collections.weekGroups | slice(0, 4) %}
+        <article class="week-group">
+          <div class="week-header">
+            <div class="week-label">{{ group.weekLabel }}</div>
+            <time>{{ group.start | date("yyyy-LL-dd") }} — {{ group.end | date("yyyy-LL-dd") }}</time>
+          </div>
+
+          <div class="language-grid">
+            <div class="language-column">
+              <div class="language-tag chinese">中文</div>
+              {% for ep in group.zh %}
+                <a class="story-card" href="{{ ep.url }}">
+                  <span class="story-date">{{ ep.data.date | date("yyyy-LL-dd") }}</span>
+                  <strong>{{ ep.data.title }}</strong>
+                  <p>{{ ep.data.summary }}</p>
+                </a>
+              {% endfor %}
+            </div>
+
+            <div class="language-column">
+              <div class="language-tag english">English</div>
+              {% for ep in group.en %}
+                <a class="story-card" href="{{ ep.url }}">
+                  <span class="story-date">{{ ep.data.date | date("yyyy-LL-dd") }}</span>
+                  <strong>{{ ep.data.title }}</strong>
+                  <p>{{ ep.data.summary }}</p>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="explore-section">
+    <h2>EXPLORE</h2>
+    <div class="topic-grid">
+      <span>AI News</span>
+      <span>AI Explained</span>
+      <span>Tutorials</span>
+      <span>Tools</span>
+      <span>Research</span>
+      <span>AI × Education</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="learn-section">
+    <h2>LEARN</h2>
+    <ul>
+      <li>What is an AI Agent?</li>
+      <li>What is an LLM?</li>
+      <li>How does RAG work?</li>
+      <li>What does "open source AI" actually mean?</li>
+    </ul>
+  </section>
 </section>
