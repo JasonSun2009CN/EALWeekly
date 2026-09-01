@@ -1,0 +1,13 @@
+---
+layout: layouts/base.njk
+title: Home
+---
+<section class="latest">
+  <h2>Latest episodes</h2>
+  <div class="episodes-list">
+    {% for ep in collections.episodes | slice(0, 6) %}
+      {% include "episode-card.njk" with { item: ep } %}
+    {% endfor %}
+  </div>
+  <p><a href="/episodes/">Browse all episodes →</a></p>
+</section>
