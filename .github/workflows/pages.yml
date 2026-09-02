@@ -30,9 +30,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # GitHub Pages project sites are served under /<repo-name>/.
+      # BASE_URL must match that path so root-relative links work.
       - name: Build site
         env:
-          BASE_URL: /EALWeekly/
+          BASE_URL: /${{ github.event.repository.name }}/
         run: npm run build
 
       - name: Upload artifact

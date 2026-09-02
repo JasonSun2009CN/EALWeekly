@@ -7,6 +7,7 @@ tags:
   - journal
   - introduction
 summary: "Short summary in one or two sentences."
+permalink: false
 ---
 
 ## Overview
