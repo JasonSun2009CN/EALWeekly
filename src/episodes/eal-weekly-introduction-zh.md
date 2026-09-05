@@ -1,12 +1,16 @@
 ---
 layout: layouts/episode.njk
-title: "EAL Weekly 是什么？"
-date: 2026-08-24
+title: EAL Weekly 是什么？
+date: 2026-08-24T00:00:00.000Z
 language: zh
 tags:
   - journal
   - introduction
-summary: "我们为什么做这个期刊，以及它想解决什么问题。"
+  - reasoning
+  - tutorial
+  - news
+  - research
+summary: 我们为什么做这个期刊，以及它想解决什么问题。
 ---
 
 ## 这是一个什么期刊？

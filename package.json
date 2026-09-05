@@ -5,7 +5,8 @@
   "description": "AI Weekly Report - static site scaffolded with Eleventy",
   "scripts": {
     "dev": "npx @11ty/eleventy --serve",
-    "build": "npx @11ty/eleventy"
+    "build": "npx @11ty/eleventy",
+    "tag": "node scripts/auto-tag.js"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.0"

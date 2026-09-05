@@ -61,6 +61,65 @@ module.exports = function(eleventyConfig) {
     return JSON.stringify(value == null ? "" : String(value));
   });
 
+  eleventyConfig.addFilter("relatedEpisodes", function(items, page, limit = 4) {
+    if (!items || !page) return [];
+
+    const currentPath = page.inputPath || page.url || "";
+    const currentName = normalizeFileName(currentPath);
+    const currentData = page.data || {};
+    const currentLanguage = getLanguageFromPath(currentPath, currentData);
+    const currentBaseKey = getBaseKey(currentPath, currentData);
+    const currentTags = new Set((currentData.tags || []).filter((t) => t && t !== "post"));
+    const currentWeekIso = currentData.weekIso;
+    const currentDate = new Date(currentData.date || page.date || 0);
+
+    const scored = items
+      .filter((item) => {
+        const itemPath = item.inputPath || "";
+        const itemName = normalizeFileName(itemPath);
+        const itemBaseKey = getBaseKey(itemPath, item.data || {});
+        return itemName !== currentName && itemBaseKey !== currentBaseKey;
+      })
+      .map((item) => {
+        const itemData = item.data || {};
+        const itemLanguage = getLanguageFromPath(item.inputPath, itemData);
+        const itemTags = new Set((itemData.tags || []).filter((t) => t && t !== "post"));
+        const itemDate = new Date(itemData.date || item.date || 0);
+
+        let score = 0;
+        let commonTags = 0;
+        if (currentTags.size && itemTags.size) {
+          for (const tag of currentTags) {
+            if (itemTags.has(tag)) commonTags += 1;
+          }
+        }
+        score += commonTags * 3;
+
+        if (currentLanguage && itemLanguage === currentLanguage) {
+          score += 2;
+        }
+
+        if (currentWeekIso && itemData.weekIso === currentWeekIso) {
+          score += 2;
+        }
+
+        const diffMs = currentDate.getTime() - itemDate.getTime();
+        const diffDays = Math.abs(diffMs) / 86400000;
+        if (!isNaN(diffDays)) {
+          score += Math.max(0, 10 - diffDays) * 0.5;
+        }
+
+        return { item, score };
+      });
+
+    scored.sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      return new Date(b.item.data.date || b.item.date || 0) - new Date(a.item.data.date || a.item.date || 0);
+    });
+
+    return scored.slice(0, limit).map((s) => s.item);
+  });
+
   eleventyConfig.addFilter("withBase", function(value) {
     if (!value || typeof value !== "string") return value;
     if (/^https?:\/\//i.test(value) || value.startsWith("#") || value.startsWith("mailto:")) {

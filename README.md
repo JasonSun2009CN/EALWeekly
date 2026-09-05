@@ -4,7 +4,11 @@ EAL Weekly 是一个面向大众的 AI 周报与知识栏目，采用中英双�
 
 ## 1. 文章目录
 
-所有文章统一放在 `src/episodes/` 目录下，文件名可以按下面的方式命名：
+所有文章统一放在 `src/episodes/` 目录下。这个文件夹**可以直接用 Obsidian 打开和管理**，但需要注意：
+
+- Obsidian 只能帮你编辑和查看 Markdown，它不会让网页自动出现"相关文章"等功能
+- 网页上的标签必须写在每篇文章的 frontmatter `tags:` 里（见第 2 节）
+- 文件名可以按下面的方式命名：
 
 - `eal-weekly-what-is-it-zh.md`
 - `eal-weekly-what-is-it-en.md`
@@ -13,6 +17,8 @@ EAL Weekly 是一个面向大众的 AI 周报与知识栏目，采用中英双�
 - `zh` 表示中文版本
 - `en` 表示英文版本
 - 同一篇文章的中文和英文文件应使用相同的基础名称，例如 `eal-weekly-what-is-it`。
+
+> **Obsidian 用户注意**：你可以在 Obsidian 中创建、编辑这些文件。只要保证 frontmatter 里的 `tags:` 写对了，网页上的"相关文章"就会正常工作。Obsidian 里的 `#标签` 或图谱链接不会同步到网站。
 
 如果一篇文章有对应的另一语言版本，网页会自动识别并在文章页顶部显示语言切换按钮：
 
@@ -61,7 +67,36 @@ npm run build
 
 6. 生成静态站点后，文章会自动出现在首页精选列表与文章列表中。
 
-## 4. MD 模版
+## 4. 自动打标签（可选）
+
+项目提供了一个基于关键词的自动打标签脚本，运行后会根据文章内容自动给 frontmatter 添加 tag：
+
+```bash
+# 扫描整个 src/episodes/ 目录
+npm run tag
+
+# 只处理单篇文章
+npm run tag -- src/episodes/your-article-zh.md
+```
+
+它会保留你已经写好的 tag，并根据正文内容自动补充。例如文章提到 OpenAI、GPT、ChatGPT 会自动加上 `openai`；提到 agent、智能体会加上 `agent`。
+
+如果你想用更智能的 AI 自动打标签（比如调用 OpenAI API 分析主题），可以在此基础上扩展脚本，接入任意大模型 API。
+
+## 5. 相关文章推荐
+
+每篇文章页面底部会自动显示"相关文章"。相关度基于：
+
+1. **共同标签数量**（最重要）
+2. 是否同一语言
+3. 是否同一周次
+4. 发布日期是否接近
+
+系统会自动排除当前文章本身，以及它的中英翻译版本，避免重复推荐。
+
+这个功能完全由 Eleventy 在构建时计算生成，不需要 Obsidian，也不需要你手动维护链接。
+
+## 6. MD 模版
 
 模版文件：`src/episodes/_template.md`
 
@@ -94,7 +129,7 @@ Explain the topic in plain language.
 - Point three
 ```
 
-## 5. 周次识别规则
+## 7. 周次识别规则
 
 网页会读取每篇文章的 `date` 字段，并自动计算该文章所属周次，例如：
 
@@ -107,15 +142,16 @@ Explain the topic in plain language.
 - 首页精选列表展示最新的前几篇
 - 文章页会显示当前文章所属周次与日期标签
 
-## 6. 开发命令
+## 8. 开发命令
 
 ```bash
 npm install
 npm run dev
 npm run build
+npm run tag        # 自动给文章打标签
 ```
 
-## 7. 本地预览与自动刷新
+## 9. 本地预览与自动刷新
 
 ### 本地预览
 
@@ -152,7 +188,7 @@ npm run build
 _site/
 ```
 
-## 8. GitHub Pages 部署步骤
+## 10. GitHub Pages 部署步骤
 
 这个项目支持 GitHub Pages 自动部署。已在仓库中添加工作流文件：
 
@@ -176,7 +212,7 @@ _site/
 
 然后每次合并到 `main` 后，GitHub Pages 都会自动重新构建并发布。
 
-## 9. User Site 与 Project Site 的区别
+## 11. User Site 与 Project Site 的区别
 
 ### User Site（用户站点）
 
@@ -222,7 +258,7 @@ BASE_URL: /EALWeekly/
 
 如果你想改成 User Site，则需要把前缀改成 `/`，并使用根域名站点。
 
-## 10. 说明
+## 12. 说明
 
 - 文章以 Markdown 为主源，不再依赖测试数据。
 - 当前站点支持中英双语文章切换。

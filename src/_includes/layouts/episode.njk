@@ -25,4 +25,20 @@ layout: layouts/base.njk
   <section class="episode-body">
     {{ content | safe }}
   </section>
+
+  {% set related = collections.episodes | relatedEpisodes(page, 4) %}
+  {% if related.length > 0 %}
+    <aside class="related-episodes">
+      <h2 data-i18n="relatedEpisodes">相关文章</h2>
+      <div class="related-list">
+        {% for item in related %}
+          <a class="story-card" href="{{ item.url | withBase }}">
+            <span class="story-date">{{ item.data.date | date("yyyy-LL-dd") }} · {{ item.data.weekLabel }}</span>
+            <strong>{{ item.data.title }}</strong>
+            <p>{{ item.data.summary }}</p>
+          </a>
+        {% endfor %}
+      </div>
+    </aside>
+  {% endif %}
 </article>

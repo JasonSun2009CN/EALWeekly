@@ -528,3 +528,30 @@ main.container {
     grid-template-columns: 1fr;
   }
 }
+
+.related-episodes {
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.related-episodes h2 {
+  margin: 0 0 16px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+
+.related-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 760px) {
+  .related-list {
+    grid-template-columns: 1fr;
+  }
+}

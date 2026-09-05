@@ -1,12 +1,16 @@
 ---
 layout: layouts/episode.njk
-title: "What is EAL Weekly?"
-date: 2026-08-24
+title: What is EAL Weekly?
+date: 2026-08-24T00:00:00.000Z
 language: en
 tags:
   - journal
   - introduction
-summary: "Why we created this publication and what problem it is trying to solve."
+  - agent
+  - reasoning
+  - news
+  - research
+summary: Why we created this publication and what problem it is trying to solve.
 ---
 
 ## What is this publication?
