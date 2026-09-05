@@ -3,7 +3,7 @@
     en: {
       siteTitle: 'EAL Weekly — Frontiers of AI for Everyone',
       siteDescription: 'Plain, approachable weekly reports about forefront AI tech. Add episodes as Markdown files in src/episodes/*.md',
-      home: 'Home', episodes: 'Episodes', github: 'GitHub', languageToggle: 'Switch language',
+      home: 'Home', episodes: 'Episodes', github: 'GitHub', languageToggle: 'Switch language', themeControl: 'Color theme', lightTheme: 'Light', darkTheme: 'Dark',
       searchPlaceholder: 'Search by title or content...',
       searchEpisodes: 'Search episodes', searchField: 'Search field', titleContent: 'Title + Content',
       title: 'Title', content: 'Content',
@@ -18,7 +18,7 @@
       noResults: 'No results', searchLoading: 'Loading search…', searchUnavailable: 'Search is temporarily unavailable.'
     },
     zh: {
-      home: '首页', episodes: '文章', github: 'GitHub', languageToggle: '切换语言',
+      home: '首页', episodes: '文章', github: 'GitHub', languageToggle: '切换语言', themeControl: '配色主题', lightTheme: '浅色', darkTheme: '深色',
       siteTitle: 'EAL Weekly —— 面向所有人的 AI 前沿',
       siteDescription: '面向大众、通俗易懂的前沿 AI 技术周报。请将文章 Markdown 文件添加到 src/episodes/*.md',
       searchPlaceholder: '按标题或内容搜索……', searchEpisodes: '搜索文章', searchField: '搜索范围', titleContent: '标题 + 内容',
@@ -34,7 +34,9 @@
     }
   };
   const languageKey = 'ealweekly:language';
+  const themeKey = 'ealweekly:theme';
   const languageToggle = document.getElementById('language-toggle');
+  const themeButtons = Array.from(document.querySelectorAll('[data-theme-value]'));
   const browserLanguage = (navigator.language || '').toLowerCase().startsWith('zh') ? 'zh' : 'en';
   let language = browserLanguage;
   try {
@@ -44,6 +46,15 @@
   }
 
   function translate(key){ return translations[language][key] || translations.en[key] || key; }
+
+  function applyTheme(theme){
+    const nextTheme = theme === 'light' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = nextTheme;
+    themeButtons.forEach((button) => {
+      const isActive = button.dataset.themeValue === nextTheme;
+      button.setAttribute('aria-pressed', String(isActive));
+    });
+  }
 
   function applyLanguage(){
     document.documentElement.lang = language;
@@ -83,6 +94,20 @@
   }
 
   applyLanguage();
+  applyTheme(document.documentElement.dataset.theme);
+
+  themeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const theme = button.dataset.themeValue;
+      applyTheme(theme);
+      try {
+        localStorage.setItem(themeKey, theme);
+      } catch (error) {
+        // Theme still changes for this visit when persistent storage is unavailable.
+      }
+    });
+  });
+
   languageToggle?.addEventListener('click', function(){
     language = language === 'zh' ? 'en' : 'zh';
     try {
