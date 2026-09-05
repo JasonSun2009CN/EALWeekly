@@ -5,18 +5,22 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addGlobalData("baseUrl", baseUrl);
 
   const getIsoWeek = (value) => {
-    if (!value) return { week: 1, label: "Week 1", iso: "2026-W01" };
     const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return { week: 1, label: "Week 1", iso: "2026-W01" };
+    if (Number.isNaN(date.getTime())) return { week: 1, label: "Week 1", iso: "1970-W01" };
 
-    const start = new Date("2026-08-24T00:00:00Z");
-    const diffDays = Math.floor((Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(start.getFullYear(), start.getMonth(), start.getDate())) / 86400000);
-    const week = Math.max(1, Math.floor(diffDays / 7) + 1);
+    // ISO weeks begin on Monday; week 1 is the week containing January 4.
+    // Work in UTC so the generated site is identical in every build timezone.
+    const utcDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+    const day = utcDate.getUTCDay() || 7;
+    utcDate.setUTCDate(utcDate.getUTCDate() + 4 - day);
+    const isoYear = utcDate.getUTCFullYear();
+    const yearStart = new Date(Date.UTC(isoYear, 0, 1));
+    const week = Math.ceil((((utcDate - yearStart) / 86400000) + 1) / 7);
 
     return {
       week,
       label: `Week ${week}`,
-      iso: `2026-W${String(week).padStart(2, "0")}`
+      iso: `${isoYear}-W${String(week).padStart(2, "0")}`
     };
   };
 
@@ -48,9 +52,9 @@ module.exports = function(eleventyConfig) {
     const pad = (n) => String(n).padStart(2, "0");
     if (!format) format = "yyyy-LL-dd";
     return format
-      .replace("yyyy", d.getFullYear())
-      .replace("LL", pad(d.getMonth() + 1))
-      .replace("dd", pad(d.getDate()));
+      .replace("yyyy", d.getUTCFullYear())
+      .replace("LL", pad(d.getUTCMonth() + 1))
+      .replace("dd", pad(d.getUTCDate()));
   });
 
   eleventyConfig.addFilter("jsonify", function(value) {
@@ -125,7 +129,7 @@ module.exports = function(eleventyConfig) {
     if (/^https?:\/\//i.test(value) || value.startsWith("#") || value.startsWith("mailto:")) {
       return value;
     }
-    const normalizedBase = (baseUrl || "/").replace(/\/$/, "");
+    const normalizedBase = `/${(baseUrl || "/").replace(/^\/+|\/+$/g, "")}`;
     const normalizedValue = value.startsWith("/") ? value.slice(1) : value;
     return normalizedBase === "/" ? `/${normalizedValue}` : `${normalizedBase}/${normalizedValue}`;
   });

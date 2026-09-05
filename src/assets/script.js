@@ -15,7 +15,7 @@
       aiNews: 'AI News', aiExplained: 'AI Explained', tutorials: 'Tutorials', tools: 'Tools', research: 'Research',
       aiEducation: 'AI × Education', learn: 'LEARN', learnAgent: 'What is an AI Agent?', learnLlm: 'What is an LLM?',
       learnRag: 'How does RAG work?', learnOpenSource: 'What does "open source AI" actually mean?',
-      noResults: 'No results'
+      noResults: 'No results', searchLoading: 'Loading search…', searchUnavailable: 'Search is temporarily unavailable.'
     },
     zh: {
       home: '首页', episodes: '文章', github: 'GitHub', languageToggle: '切换语言',
@@ -30,13 +30,18 @@
       thisWeek: '本周内容', featured: '精选文章', viewAll: '查看全部', explore: '探索主题',
       aiNews: 'AI 新闻', aiExplained: 'AI 解释', tutorials: '教程', tools: '工具', research: '研究',
       aiEducation: 'AI × 教育', learn: '学习', learnAgent: '什么是 AI Agent？', learnLlm: '什么是 LLM？',
-      learnRag: 'RAG 是如何工作的？', learnOpenSource: '“开源 AI”到底是什么意思？', noResults: '没有找到结果',
+      learnRag: 'RAG 是如何工作的？', learnOpenSource: '“开源 AI”到底是什么意思？', noResults: '没有找到结果', searchLoading: '正在加载搜索…', searchUnavailable: '搜索暂时不可用。',
     }
   };
   const languageKey = 'ealweekly:language';
   const languageToggle = document.getElementById('language-toggle');
   const browserLanguage = (navigator.language || '').toLowerCase().startsWith('zh') ? 'zh' : 'en';
-  let language = localStorage.getItem(languageKey) || browserLanguage;
+  let language = browserLanguage;
+  try {
+    language = localStorage.getItem(languageKey) || browserLanguage;
+  } catch (error) {
+    // Storage may be blocked in privacy-focused browsing contexts.
+  }
 
   function translate(key){ return translations[language][key] || translations.en[key] || key; }
 
@@ -80,7 +85,11 @@
   applyLanguage();
   languageToggle?.addEventListener('click', function(){
     language = language === 'zh' ? 'en' : 'zh';
-    localStorage.setItem(languageKey, language);
+    try {
+      localStorage.setItem(languageKey, language);
+    } catch (error) {
+      // The language still changes for this visit when persistent storage is unavailable.
+    }
     applyLanguage();
     if (resultsEl) renderResults(lastResults);
   });
@@ -89,6 +98,7 @@
   const searchInput = document.getElementById('search-input');
   const searchTarget = document.getElementById('search-target');
   const resultsEl = document.getElementById('search-results');
+  const searchStatus = document.getElementById('search-status');
 
   if(!searchInput || !resultsEl) return;
 
@@ -96,22 +106,58 @@
   let fuseByMode;
   let lastResults = [];
 
+  function setSearchStatus(key){
+    if (searchStatus) searchStatus.textContent = key ? translate(key) : '';
+  }
+
   function renderResults(list){
     lastResults = list || [];
-    if(!list || list.length === 0){ resultsEl.innerHTML = `<p class="muted">${translate('noResults')}</p>`; return; }
-    resultsEl.innerHTML = list.map(it => `
-      <div class="search-hit">
-        <h3><a href="${it.url}">${it.title}</a></h3>
-        <p class="meta">${it.date} ${it.tags && it.tags.length ? ' • ' + it.tags.join(', ') : ''}</p>
-        <p>${(it.summary||'').substring(0,240)}</p>
-      </div>
-    `).join('');
+    resultsEl.replaceChildren();
+    if(!list || list.length === 0){
+      const noResults = document.createElement('p');
+      noResults.className = 'muted';
+      noResults.textContent = translate('noResults');
+      resultsEl.append(noResults);
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    list.forEach((item) => {
+      const hit = document.createElement('article');
+      hit.className = 'search-hit';
+      const heading = document.createElement('h3');
+      const link = document.createElement('a');
+      link.href = item.url;
+      link.textContent = item.title;
+      heading.append(link);
+
+      const meta = document.createElement('p');
+      meta.className = 'meta';
+      meta.textContent = `${item.date}${item.tags && item.tags.length ? ` • ${item.tags.join(', ')}` : ''}`;
+
+      const summary = document.createElement('p');
+      summary.textContent = (item.summary || '').substring(0, 240);
+      hit.append(heading, meta, summary);
+      fragment.append(hit);
+    });
+    resultsEl.append(fragment);
   }
 
   const basePath = document.querySelector('meta[name="base-url"]')?.getAttribute('content') || '/';
   const searchIndexUrl = new URL('search.json', `${window.location.origin}${basePath}`).toString();
 
-  fetch(searchIndexUrl).then(r=>r.json()).then(data=>{
+  if (!window.Fuse) {
+    setSearchStatus('searchUnavailable');
+    searchInput.disabled = true;
+    if (searchTarget) searchTarget.disabled = true;
+    return;
+  }
+
+  setSearchStatus('searchLoading');
+  fetch(searchIndexUrl).then(r=>{
+    if (!r.ok) throw new Error(`Search index request failed: ${r.status}`);
+    return r.json();
+  }).then(data=>{
     items = data;
 
     const options = { threshold: 0.38, ignoreLocation: true };
@@ -120,15 +166,19 @@
       title: new Fuse(items, { ...options, keys: ['title'] }),
       content: new Fuse(items, { ...options, keys: ['content'] })
     };
+    setSearchStatus('');
   }).catch(err=>{
     console.error(err);
+    setSearchStatus('searchUnavailable');
+    searchInput.disabled = true;
+    if (searchTarget) searchTarget.disabled = true;
   });
 
   function applyFiltersAndSearch(){
     const q = searchInput.value.trim();
     if(!q){
       lastResults = [];
-      resultsEl.innerHTML = '';
+      resultsEl.replaceChildren();
       return;
     }
     if(fuseByMode){
