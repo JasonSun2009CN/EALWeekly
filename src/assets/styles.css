@@ -222,7 +222,7 @@ main.container {
 
 .search-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.8fr) minmax(92px, 1fr) minmax(108px, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(140px, auto);
   gap: 10px;
 }
 

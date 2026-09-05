@@ -57,6 +57,10 @@ module.exports = function(eleventyConfig) {
     return JSON.stringify(value || []);
   });
 
+  eleventyConfig.addFilter("json", function(value) {
+    return JSON.stringify(value == null ? "" : String(value));
+  });
+
   eleventyConfig.addFilter("withBase", function(value) {
     if (!value || typeof value !== "string") return value;
     if (/^https?:\/\//i.test(value) || value.startsWith("#") || value.startsWith("mailto:")) {

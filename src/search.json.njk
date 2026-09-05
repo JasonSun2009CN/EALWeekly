@@ -5,12 +5,12 @@ sitemap: false
 [
 {%- for ep in collections.episodes -%}
   {
-    "title": "{{ ep.data.title | safe }}",
-    "url": "{{ ep.url | withBase }}",
-    "date": "{{ ep.date | date("yyyy-LL-dd") }}",
-    "tags": {{ ep.data.tags | jsonify }},
-    "summary": "{{ (ep.data.summary or ep.templateContent | striptags | truncate(300)) | safe }}",
-    "content": "{{ ep.templateContent | striptags | replace('\n', ' ') | safe }}"
+    "title": {{ ep.data.title | json | safe }},
+    "url": {{ (ep.url | withBase) | json | safe }},
+    "date": {{ (ep.date | date("yyyy-LL-dd")) | json | safe }},
+    "tags": {{ ep.data.tags | jsonify | safe }},
+    "summary": {{ (ep.data.summary or ep.templateContent | striptags | truncate(300)) | json | safe }},
+    "content": {{ (ep.templateContent | striptags | replace('\n', ' ')) | json | safe }}
   }{%- if not loop.last -%},{%- endif -%}
 {%- endfor -%}
 ]

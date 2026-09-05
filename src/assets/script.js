@@ -6,7 +6,7 @@
       home: 'Home', episodes: 'Episodes', github: 'GitHub', languageToggle: 'Switch language',
       searchPlaceholder: 'Search by title or content...',
       searchEpisodes: 'Search episodes', searchField: 'Search field', titleContent: 'Title + Content',
-      title: 'Title', content: 'Content', filterDate: 'Filter by date',
+      title: 'Title', content: 'Content',
       footerBuilt: '© EAL Weekly Team — EAL Weekly. Built with Eleventy.', contribute: 'Contribute on GitHub',
       welcomeContribute: 'Welcome to contribute', englishVersion: 'English Version', chineseVersion: '中文版本',
       archive: 'ARCHIVE', allIssues: 'All issues', chinese: '中文', english: 'English', heroTitle: 'AI, explained for everyone.',
@@ -22,7 +22,7 @@
       siteTitle: 'EAL Weekly —— 面向所有人的 AI 前沿',
       siteDescription: '面向大众、通俗易懂的前沿 AI 技术周报。请将文章 Markdown 文件添加到 src/episodes/*.md',
       searchPlaceholder: '按标题或内容搜索……', searchEpisodes: '搜索文章', searchField: '搜索范围', titleContent: '标题 + 内容',
-      title: '标题', content: '内容', filterDate: '按日期筛选',
+      title: '标题', content: '内容',
       footerBuilt: '© EAL Weekly Team —— EAL Weekly。使用 Eleventy 构建。', contribute: '在 GitHub 上贡献',
       welcomeContribute: '欢迎参与贡献', englishVersion: 'English Version', chineseVersion: '中文版本',
       archive: '文章归档', allIssues: '全部文章', chinese: '中文', english: 'English', heroTitle: '用人人都能懂的方式解释 AI。',
@@ -89,21 +89,12 @@
   const searchInput = document.getElementById('search-input');
   const searchTarget = document.getElementById('search-target');
   const resultsEl = document.getElementById('search-results');
-  const filterDate = document.getElementById('filter-date');
 
   if(!searchInput || !resultsEl) return;
 
   let items = [];
-  let fuse;
+  let fuseByMode;
   let lastResults = [];
-
-  function getFuseKeys(){
-    if(!searchTarget) return ['title', 'content'];
-    const mode = searchTarget.value;
-    if(mode === 'title') return ['title'];
-    if(mode === 'content') return ['content'];
-    return ['title', 'content'];
-  }
 
   function renderResults(list){
     lastResults = list || [];
@@ -121,43 +112,30 @@
   const searchIndexUrl = new URL('search.json', `${window.location.origin}${basePath}`).toString();
 
   fetch(searchIndexUrl).then(r=>r.json()).then(data=>{
-    items = data.map(d=>({
-      ...d,
-      dateObj: d.date ? new Date(d.date + 'T00:00:00') : null
-    }));
+    items = data;
 
-    fuse = new Fuse(items, {
-      keys: ['title', 'content', 'summary', 'tags'],
-      threshold: 0.38,
-      ignoreLocation: true
-    });
-    renderResults(items.slice(0, 10));
+    const options = { threshold: 0.38, ignoreLocation: true };
+    fuseByMode = {
+      all: new Fuse(items, { ...options, keys: ['title', 'content', 'summary', 'tags'] }),
+      title: new Fuse(items, { ...options, keys: ['title'] }),
+      content: new Fuse(items, { ...options, keys: ['content'] })
+    };
   }).catch(err=>{
     console.error(err);
   });
 
   function applyFiltersAndSearch(){
     const q = searchInput.value.trim();
-    const date = filterDate ? filterDate.value : '';
-
-    let candidates = items.slice();
-
-    if(date){
-      const d = new Date(date + 'T00:00:00');
-      candidates = candidates.filter(it => it.dateObj && it.dateObj.getTime() === d.getTime());
+    if(!q){
+      lastResults = [];
+      resultsEl.innerHTML = '';
+      return;
     }
-
-    if(q && fuse){
-      const keys = getFuseKeys();
-      const res = fuse.search(q, { keys, limit: 50 }).map(r=>r.item);
-      if(date){
-        const urls = new Set(candidates.map(c=>c.url));
-        renderResults(res.filter(r=>urls.has(r.url)));
-      } else {
-        renderResults(res);
-      }
-    } else {
-      renderResults(candidates.slice(0, 50));
+    if(fuseByMode){
+      const mode = searchTarget?.value === 'title' || searchTarget?.value === 'content'
+        ? searchTarget.value
+        : 'all';
+      renderResults(fuseByMode[mode].search(q, { limit: 50 }).map(r=>r.item));
     }
   }
 
@@ -165,6 +143,5 @@
 
   searchInput.addEventListener('input', debounce(applyFiltersAndSearch, 180));
   if(searchTarget) searchTarget.addEventListener('change', applyFiltersAndSearch);
-  if(filterDate) filterDate.addEventListener('change', applyFiltersAndSearch);
 
 })();
