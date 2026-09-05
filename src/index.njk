@@ -6,8 +6,8 @@ permalink: /index.html
 <section class="frontpage">
   <div class="masthead-block">
     <div class="eyebrow">EAL WEEKLY</div>
-    <h1>AI, explained for everyone.</h1>
-    <p class="editorial-summary">A bilingual weekly journal covering AI news, tools, and ideas in plain language.</p>
+    <h1 data-i18n="heroTitle">AI, explained for everyone.</h1>
+    <p class="editorial-summary" data-i18n="heroDescription">A bilingual weekly journal covering AI news, tools, and ideas in plain language.</p>
   </div>
 
   <div class="divider"></div>
@@ -15,7 +15,7 @@ permalink: /index.html
   {% set currentGroup = collections.weekGroups[0] if collections.weekGroups and collections.weekGroups.length else null %}
   <div class="issue-panel">
     <div class="issue-header">
-      <span>THIS WEEK</span>
+      <span data-i18n="thisWeek">THIS WEEK</span>
       {% if currentGroup %}
         <time>{{ currentGroup.start | date("yyyy-LL-dd") }} — {{ currentGroup.end | date("yyyy-LL-dd") }}</time>
       {% else %}
@@ -27,14 +27,14 @@ permalink: /index.html
       <div class="this-week-list">
         {% for ep in currentGroup.zh %}
           <a class="this-week-item" href="{{ ep.url | withBase }}">
-            <span class="issue-kicker">中文</span>
+            <span class="issue-kicker" data-i18n="chinese">中文</span>
             <strong>{{ ep.data.title }}</strong>
             <p>{{ ep.data.summary }}</p>
           </a>
         {% endfor %}
         {% for ep in currentGroup.en %}
           <a class="this-week-item" href="{{ ep.url | withBase }}">
-            <span class="issue-kicker">English</span>
+            <span class="issue-kicker" data-i18n="english">English</span>
             <strong>{{ ep.data.title }}</strong>
             <p>{{ ep.data.summary }}</p>
           </a>
@@ -47,8 +47,8 @@ permalink: /index.html
 
   <section class="featured-section">
     <div class="featured-topbar">
-      <h2>精选文章</h2>
-      <a href="{{ baseUrl }}episodes/">查看全部</a>
+      <h2 data-i18n="featured">精选文章</h2>
+      <a href="{{ baseUrl }}episodes/" data-i18n="viewAll">查看全部</a>
     </div>
 
     <div class="week-groups">
@@ -61,7 +61,7 @@ permalink: /index.html
 
           <div class="language-grid">
             <div class="language-column">
-              <div class="language-tag chinese">中文</div>
+              <div class="language-tag chinese" data-i18n="chinese">中文</div>
               {% for ep in group.zh %}
                 <a class="story-card" href="{{ ep.url | withBase }}">
                   <span class="story-date">{{ ep.data.date | date("yyyy-LL-dd") }}</span>
@@ -72,7 +72,7 @@ permalink: /index.html
             </div>
 
             <div class="language-column">
-              <div class="language-tag english">English</div>
+              <div class="language-tag english" data-i18n="english">English</div>
               {% for ep in group.en %}
                 <a class="story-card" href="{{ ep.url | withBase }}">
                   <span class="story-date">{{ ep.data.date | date("yyyy-LL-dd") }}</span>
@@ -90,26 +90,26 @@ permalink: /index.html
   <div class="divider"></div>
 
   <section class="explore-section">
-    <h2>EXPLORE</h2>
+    <h2 data-i18n="explore">EXPLORE</h2>
     <div class="topic-grid">
-      <span>AI News</span>
-      <span>AI Explained</span>
-      <span>Tutorials</span>
-      <span>Tools</span>
-      <span>Research</span>
-      <span>AI × Education</span>
+      <span data-i18n="aiNews">AI News</span>
+      <span data-i18n="aiExplained">AI Explained</span>
+      <span data-i18n="tutorials">Tutorials</span>
+      <span data-i18n="tools">Tools</span>
+      <span data-i18n="research">Research</span>
+      <span data-i18n="aiEducation">AI × Education</span>
     </div>
   </section>
 
   <div class="divider"></div>
 
   <section class="learn-section">
-    <h2>LEARN</h2>
+    <h2 data-i18n="learn">LEARN</h2>
     <ul>
-      <li>What is an AI Agent?</li>
-      <li>What is an LLM?</li>
-      <li>How does RAG work?</li>
-      <li>What does "open source AI" actually mean?</li>
+      <li data-i18n="learnAgent">What is an AI Agent?</li>
+      <li data-i18n="learnLlm">What is an LLM?</li>
+      <li data-i18n="learnRag">How does RAG work?</li>
+      <li data-i18n="learnOpenSource">What does "open source AI" actually mean?</li>
     </ul>
   </section>
 </section>

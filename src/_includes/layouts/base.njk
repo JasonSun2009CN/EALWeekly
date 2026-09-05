@@ -16,12 +16,13 @@
       <div class="container">
         <a class="brand" href="{{ baseUrl }}">{{ site.title }}</a>
         <nav class="main-nav">
-          <a href="{{ baseUrl }}">Home</a>
-          <a href="{{ baseUrl }}episodes/">Episodes</a>
-          <a href="https://github.com/JasonSun2009CN/EALWeekly" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="{{ baseUrl }}" data-i18n="home">Home</a>
+          <a href="{{ baseUrl }}episodes/" data-i18n="episodes">Episodes</a>
+          <a href="https://github.com/JasonSun2009CN/EALWeekly" target="_blank" rel="noreferrer" data-i18n="github">GitHub</a>
         </nav>
         <div class="controls">
-          <button id="theme-toggle" aria-label="Toggle theme">🌓</button>
+          <button id="language-toggle" class="language-toggle" type="button" aria-label="Switch language" data-i18n-aria-label="languageToggle">中文</button>
+          <button id="theme-toggle" aria-label="Toggle theme" data-i18n-aria-label="themeToggle">Theme</button>
         </div>
       </div>
     </header>
@@ -38,20 +39,20 @@
         <section class="search-area">
           <div class="search-row">
             <div class="search-control search-input-wrap">
-              <input id="search-input" type="search" placeholder="Search by title or content..." aria-label="Search episodes" />
+              <input id="search-input" type="search" placeholder="Search by title or content..." aria-label="Search episodes" data-i18n-placeholder="searchPlaceholder" data-i18n-aria-label="searchEpisodes" />
             </div>
             <div class="search-control search-select-wrap">
-              <select id="search-target" aria-label="Search field">
-                <option value="title,content">Title + Content</option>
-                <option value="title">Title</option>
-                <option value="content">Content</option>
+              <select id="search-target" aria-label="Search field" data-i18n-aria-label="searchField">
+                <option value="title,content" data-i18n="titleContent">Title + Content</option>
+                <option value="title" data-i18n="title">Title</option>
+                <option value="content" data-i18n="content">Content</option>
               </select>
             </div>
             <div class="search-control">
-              <input id="filter-week" type="week" title="Filter by week" />
+              <input id="filter-week" type="week" title="Filter by week" data-i18n-title="filterWeek" />
             </div>
             <div class="search-control">
-              <input id="filter-date" type="date" title="Filter by date" />
+              <input id="filter-date" type="date" title="Filter by date" data-i18n-title="filterDate" />
             </div>
           </div>
           <div id="search-results" class="search-results"></div>
@@ -63,8 +64,8 @@
 
     <footer class="site-footer">
       <div class="container footer-row">
-        <small>© {{ (site.author) }} — EAL Weekly. Built with Eleventy.</small>
-        <small><a href="https://github.com/JasonSun2009CN/EALWeekly" target="_blank" rel="noreferrer">Contribute on GitHub</a> · Welcome to contribute</small>
+        <small data-i18n="footerBuilt">© {{ (site.author) }} — EAL Weekly. Built with Eleventy.</small>
+        <small><a href="https://github.com/JasonSun2009CN/EALWeekly" target="_blank" rel="noreferrer" data-i18n="contribute">Contribute on GitHub</a> · <span data-i18n="welcomeContribute">Welcome to contribute</span></small>
       </div>
     </footer>
 

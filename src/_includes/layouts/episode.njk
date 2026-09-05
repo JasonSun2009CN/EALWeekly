@@ -15,9 +15,9 @@ layout: layouts/base.njk
   {% if translation %}
     <div class="translation-switcher">
       {% if language == "zh" %}
-        <a href="{{ translation.url | withBase }}" class="lang-button">English Version</a>
+        <a href="{{ translation.url | withBase }}" class="lang-button" data-i18n="englishVersion">English Version</a>
       {% else %}
-        <a href="{{ translation.url | withBase }}" class="lang-button">中文版本</a>
+        <a href="{{ translation.url | withBase }}" class="lang-button" data-i18n="chineseVersion">中文版本</a>
       {% endif %}
     </div>
   {% endif %}

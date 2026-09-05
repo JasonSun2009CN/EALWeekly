@@ -86,12 +86,18 @@ body {
   margin-left: 8px;
 }
 
-button#theme-toggle {
+button#theme-toggle,
+button#language-toggle {
   border: 1px solid var(--border);
   background: var(--panel);
   border-radius: 999px;
   padding: 8px 10px;
   cursor: pointer;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
 }
 
 main.container {

@@ -5,8 +5,8 @@ permalink: /episodes/index.html
 ---
 <section class="all-episodes">
   <div class="archive-header">
-    <div class="eyebrow">ARCHIVE</div>
-    <h2>All issues</h2>
+    <div class="eyebrow" data-i18n="archive">ARCHIVE</div>
+    <h2 data-i18n="allIssues">All issues</h2>
   </div>
 
   <div class="week-groups archive-groups">
@@ -19,7 +19,7 @@ permalink: /episodes/index.html
 
         <div class="language-grid">
           <div class="language-column">
-            <div class="language-tag chinese">中文</div>
+            <div class="language-tag chinese" data-i18n="chinese">中文</div>
             {% for ep in group.zh %}
               <a class="story-card" href="{{ ep.url | withBase }}">
                 <span class="story-date">{{ ep.data.date | date("yyyy-LL-dd") }}</span>
@@ -30,7 +30,7 @@ permalink: /episodes/index.html
           </div>
 
           <div class="language-column">
-            <div class="language-tag english">English</div>
+            <div class="language-tag english" data-i18n="english">English</div>
             {% for ep in group.en %}
               <a class="story-card" href="{{ ep.url | withBase }}">
                 <span class="story-date">{{ ep.data.date | date("yyyy-LL-dd") }}</span>
