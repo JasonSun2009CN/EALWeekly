@@ -1,6 +1,8 @@
 (function(){
   const translations = {
     en: {
+      siteTitle: 'EAL Weekly — Frontiers of AI for Everyone',
+      siteDescription: 'Plain, approachable weekly reports about forefront AI tech. Add episodes as Markdown files in src/episodes/*.md',
       home: 'Home', episodes: 'Episodes', github: 'GitHub', languageToggle: 'Switch language',
       themeToggle: 'Toggle theme', searchPlaceholder: 'Search by title or content...',
       searchEpisodes: 'Search episodes', searchField: 'Search field', titleContent: 'Title + Content',
@@ -17,6 +19,8 @@
     },
     zh: {
       home: '首页', episodes: '文章', github: 'GitHub', languageToggle: '切换语言', themeToggle: '切换主题',
+      siteTitle: 'EAL Weekly —— 面向所有人的 AI 前沿',
+      siteDescription: '面向大众、通俗易懂的前沿 AI 技术周报。请将文章 Markdown 文件添加到 src/episodes/*.md',
       searchPlaceholder: '按标题或内容搜索……', searchEpisodes: '搜索文章', searchField: '搜索范围', titleContent: '标题 + 内容',
       title: '标题', content: '内容', filterWeek: '按周筛选', filterDate: '按日期筛选',
       footerBuilt: '© EAL Weekly Team —— EAL Weekly。使用 Eleventy 构建。', contribute: '在 GitHub 上贡献',
@@ -51,6 +55,9 @@
     document.querySelectorAll('[data-i18n-aria-label]').forEach((element) => {
       element.setAttribute('aria-label', translate(element.dataset.i18nAriaLabel));
     });
+    document.querySelectorAll('[data-i18n-content]').forEach((element) => {
+      element.setAttribute('content', translate(element.dataset.i18nContent));
+    });
     if (languageToggle) {
       languageToggle.textContent = language === 'zh' ? 'English' : '中文';
       languageToggle.setAttribute('aria-pressed', language === 'zh' ? 'true' : 'false');
@@ -60,7 +67,7 @@
       if (match) element.textContent = language === 'zh' ? `第 ${match[1]} 周` : `Week ${match[1]}`;
     });
     const path = window.location.pathname.replace(/\/$/, '');
-    if (path === '' || path.endsWith('/index')) document.title = translate('home');
+    if (path === '' || path.endsWith('/index')) document.title = translate('siteTitle');
     else if (path.endsWith('/episodes')) document.title = translate('episodes');
   }
 
